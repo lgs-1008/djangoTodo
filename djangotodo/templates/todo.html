@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}Todo{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated %}
+  <h2>{{ user.username }}'s To Do List!</h2>
+  <button type="button" name="logoutBtn"><p><a href="{% url 'logout' %}">logout</a></p></button><br>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" name="addBtn">추가</button>
+  </form>
+  {% for item in items %}
+        <p>{{ item.todoText }} / {{ item.createDate }}  <button type="button" name="deleteBtn"><a href="{% url 'todo:todo_delete' pk=item.pk %}">삭제</a></button></p>
+  {% endfor %}
+{% else %}
+<p>You are not USER! :u </p>
+<button type="button" name="loginBtn"><a href="{% url 'login' %}">login</a></button>
+<button type="button" name="signupBtn"><a href="{% url 'accounts:signup' %}">signup</a></button>
+{% endif %}
+{% endblock %}
